@@ -11,13 +11,32 @@ import {
   Title,
   Body
 } from "native-base";
+import { connect } from "react-redux";
 import globalStyles, { width } from "../customLib/globalStyles";
+import { getPopularMovie } from "../redux/actions/movie";
 
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      page: 1
+    };
   }
+
+  componentDidMount() {
+    this._getPopularMovie();
+  }
+
+  _getPopularMovie = () => {
+    this.props
+      .getPopularMovie(this.state.page)
+      .then(res => {
+        console.log("res", res);
+      })
+      .catch(err => {
+        console.log("err", err);
+      });
+  };
 
   render() {
     return (
@@ -64,4 +83,15 @@ const styles = StyleSheet.create({
   }
 });
 
-export default HomeScreen;
+const mapStateToProps = ({ movie }) => ({
+  isLoading: movie.isLoading
+});
+
+const mapDispatchToProps = dispatch => ({
+  getPopularMovie: param => dispatch(getPopularMovie(param))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HomeScreen);
