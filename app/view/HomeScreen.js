@@ -11,7 +11,7 @@ import {
   Title,
   Body
 } from "native-base";
-import { width } from "../customLib/globalStyles";
+import globalStyles, { width } from "../customLib/globalStyles";
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -23,49 +23,28 @@ class HomeScreen extends Component {
     return (
       <Container>
         <Header>
-          <View
-            style={{
-              width: "100%",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center"
-            }}
-          >
+          <View style={globalStyles.rowBetween}>
             <View
-              style={{
-                width: "70%",
-                flexDirection: "row",
-                alignItems: "center"
-              }}
+              style={[
+                globalStyles.rowCenter,
+                {
+                  width: "70%"
+                }
+              ]}
             >
               <Icon name="menu" type="Entypo" />
               <Title style={{ marginLeft: width * 0.1 }}>Movies</Title>
             </View>
 
-            <TouchableOpacity
-              style={{
-                width: "10%",
-                alignItems: "center"
-              }}
-            >
+            <TouchableOpacity style={styles.buttonItem}>
               <Icon name="search" type="EvilIcons" />
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={{
-                width: "10%",
-                alignItems: "center"
-              }}
-            >
+            <TouchableOpacity style={styles.buttonItem}>
               <Icon name="filter" type="FontAwesome" />
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={{
-                width: "10%",
-                alignItems: "center"
-              }}
-            >
+            <TouchableOpacity style={styles.buttonItem}>
               <Icon name="md-more" type="Ionicons" />
             </TouchableOpacity>
           </View>
@@ -79,11 +58,9 @@ class HomeScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  headerContent: {
-    width: "50%",
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 10
+  buttonItem: {
+    width: "10%",
+    alignItems: "center"
   }
 });
 

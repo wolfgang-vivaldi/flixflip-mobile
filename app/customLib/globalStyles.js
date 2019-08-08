@@ -45,6 +45,16 @@ const globalStyles = StyleSheet.create({
   },
   font: {
     fontFamily: "Nunito-Regular"
+  },
+  rowBetween: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  rowCenter: {
+    flexDirection: "row",
+    alignItems: "center"
   }
 });
 
