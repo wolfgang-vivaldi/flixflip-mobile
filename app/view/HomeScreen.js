@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, FlatList, Image } from "react-native";
 import {
   View,
   Text,
@@ -9,17 +9,22 @@ import {
   Icon,
   Content,
   Title,
-  Body
+  Body,
+  Card,
+  CardItem
 } from "native-base";
 import { connect } from "react-redux";
-import globalStyles, { width } from "../customLib/globalStyles";
+import globalStyles, { width, height } from "../customLib/globalStyles";
 import { getPopularMovie } from "../redux/actions/movie";
+import { IMAGE_URL } from "../customLib/APIServices";
 
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: 1
+      page: 1,
+      popular: [],
+      count: null
     };
   }
 
@@ -31,11 +36,35 @@ class HomeScreen extends Component {
     this.props
       .getPopularMovie(this.state.page)
       .then(res => {
-        console.log("res", res);
+        this.setState({ popular: res.results, count: res.total_results });
       })
       .catch(err => {
         console.log("err", err);
       });
+  };
+
+  _renderMovie = item => {
+    return (
+      <TouchableOpacity style={{ width: width * 0.33, padding: 5 }}>
+        <Card>
+          <CardItem cardBody>
+            <Image
+              resizeMethod="resize"
+              resizeMode="cover"
+              style={{
+                height: height * 0.2,
+                borderTopLeftRadius: 5,
+                borderTopRightRadius: 5
+              }}
+              source={{ uri: `${IMAGE_URL}${item.poster_path}` }}
+            />
+          </CardItem>
+          <CardItem>
+            <Text>{item.title}</Text>
+          </CardItem>
+        </Card>
+      </TouchableOpacity>
+    );
   };
 
   render() {
@@ -69,7 +98,28 @@ class HomeScreen extends Component {
           </View>
         </Header>
         <Content>
-          <Text> hoome</Text>
+          {/* <View
+            style={{
+
+              alignItems: "center",
+              justifyContent: "center",
+              paddingBottom: 50
+            }}
+          > */}
+          <FlatList
+            data={this.state.popular}
+            numColumns={3}
+            keyExtractor={(item, index) => index.toString}
+            ListEmptyComponent={() => {
+              return (
+                <View style={{ width: "100%", justifyContent: "center" }}>
+                  <Text>Empty List</Text>
+                </View>
+              );
+            }}
+            renderItem={({ item, index }) => this._renderMovie(item)}
+          />
+          {/* </View> */}
         </Content>
       </Container>
     );
