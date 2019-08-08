@@ -9,11 +9,21 @@ import HomeScreen from "../view/HomeScreen";
 import ProfileScreen from "../view/ProfileScreen";
 
 const HomeTab = createStackNavigator({
-  Home: HomeScreen
+  Home: {
+    screen: HomeScreen,
+    navigationOptions: {
+      header: null
+    }
+  }
 });
 
 const ProfileTab = createStackNavigator({
-  Profile: ProfileScreen
+  Profile: {
+    screen: ProfileScreen,
+    navigationOptions: {
+      header: null
+    }
+  }
 });
 
 const Tabs = createBottomTabNavigator(
