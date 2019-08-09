@@ -14,9 +14,11 @@ import {
   CardItem
 } from "native-base";
 import { connect } from "react-redux";
+import StarRating from "react-native-star-rating";
 import globalStyles, { width, height } from "../customLib/globalStyles";
 import { getPopularMovie } from "../redux/actions/movie";
 import { IMAGE_URL } from "../customLib/APIServices";
+import { trimText } from "../customLib/helpers";
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -45,24 +47,48 @@ class HomeScreen extends Component {
 
   _renderMovie = item => {
     return (
-      <TouchableOpacity style={{ width: width * 0.33, padding: 5 }}>
-        <Card>
-          <CardItem cardBody>
-            <Image
-              resizeMethod="resize"
-              resizeMode="cover"
+      <TouchableOpacity style={{ width: width * 0.3, padding: 5 }}>
+        <View style={{}}>
+          <Image
+            resizeMethod="resize"
+            resizeMode="cover"
+            style={{
+              height: width * 0.45,
+              borderRadius: 5,
+              flex: 1
+            }}
+            source={{ uri: `${IMAGE_URL}${item.poster_path}` }}
+          />
+          <View
+            style={{
+              position: "absolute",
+              backgroundColor: "rgba(0,0,0,0.5)",
+              bottom: 0,
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: 5,
+              width: "100%"
+            }}
+          >
+            <Text
               style={{
-                height: height * 0.2,
-                borderTopLeftRadius: 5,
-                borderTopRightRadius: 5
+                color: "white",
+                fontSize: 14,
+                marginBottom: 5
               }}
-              source={{ uri: `${IMAGE_URL}${item.poster_path}` }}
-            />
-          </CardItem>
-          <CardItem>
-            <Text>{item.title}</Text>
-          </CardItem>
-        </Card>
+            >
+              {trimText(item.title, 20)}
+            </Text>
+            <Text
+              style={{
+                color: "white",
+                fontSize: 14
+              }}
+            >
+              {item.release_date}
+            </Text>
+          </View>
+        </View>
       </TouchableOpacity>
     );
   };
@@ -70,7 +96,7 @@ class HomeScreen extends Component {
   render() {
     return (
       <Container>
-        <Header>
+        <Header style={{ backgroundColor: "white" }}>
           <View style={globalStyles.rowBetween}>
             <View
               style={[
@@ -98,28 +124,28 @@ class HomeScreen extends Component {
           </View>
         </Header>
         <Content>
-          {/* <View
+          <View
             style={{
-
               alignItems: "center",
               justifyContent: "center",
+              backgroundColor: "#f9f9f9",
               paddingBottom: 50
             }}
-          > */}
-          <FlatList
-            data={this.state.popular}
-            numColumns={3}
-            keyExtractor={(item, index) => index.toString}
-            ListEmptyComponent={() => {
-              return (
-                <View style={{ width: "100%", justifyContent: "center" }}>
-                  <Text>Empty List</Text>
-                </View>
-              );
-            }}
-            renderItem={({ item, index }) => this._renderMovie(item)}
-          />
-          {/* </View> */}
+          >
+            <FlatList
+              data={this.state.popular}
+              numColumns={3}
+              keyExtractor={(item, index) => index.toString}
+              ListEmptyComponent={() => {
+                return (
+                  <View style={{ width: "100%", justifyContent: "center" }}>
+                    <Text>Empty List</Text>
+                  </View>
+                );
+              }}
+              renderItem={({ item, index }) => this._renderMovie(item)}
+            />
+          </View>
         </Content>
       </Container>
     );
