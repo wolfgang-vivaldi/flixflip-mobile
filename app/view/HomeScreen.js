@@ -16,6 +16,7 @@ import globalStyles, { width, height, colors } from "../customLib/globalStyles";
 import { getPopularMovie, loadMoreMovie } from "../redux/actions/movie";
 import { IMAGE_URL } from "../customLib/APIServices";
 import { trimText } from "../customLib/helpers";
+import { searchMovies } from "../redux/actions/search";
 
 const AnimatableSectionList = createAnimatableComponent(SectionList);
 
@@ -28,7 +29,8 @@ class HomeScreen extends Component {
       count: null,
       isRefreshing: false,
       showSearch: false,
-      searchBar: null
+      searchBar: null,
+      searchVal: null
     };
   }
 
@@ -136,6 +138,19 @@ class HomeScreen extends Component {
     );
   }
 
+  _searchMovieAction = () => {
+    let param = this.state.searchVal;
+    this.props.navigation.navigate("SearchScreen", { param });
+    // this.props
+    //   .searchMovies(param)
+    //   .then(res => {
+    //     console.log("res", res);
+    //   })
+    //   .catch(err => {
+    //     console.log("err", err);
+    //   });
+  };
+
   renderFooter = () => {
     if (this.props.isLoadMore) return null;
 
@@ -178,7 +193,11 @@ class HomeScreen extends Component {
                 <Icon name="ios-arrow-back" type="Ionicons" />
               </TouchableOpacity>
               <TextInput
+                ref={input => (this.searchInput = input)}
                 style={{ width: "90%", fontSize: 16 }}
+                onChangeText={val => this.setState({ searchVal: val })}
+                returnKeyType="search"
+                onSubmitEditing={this._searchMovieAction}
                 placeholder="Search Movies"
               />
             </View>
@@ -207,12 +226,15 @@ class HomeScreen extends Component {
             </View>
 
             <TouchableOpacity
-              onPress={() =>
-                this.setState({
-                  showSearch: true,
-                  searchBar: "bounceInRight"
-                })
-              }
+              onPress={() => {
+                this.setState(
+                  {
+                    showSearch: true,
+                    searchBar: "bounceInRight"
+                  },
+                  () => this.searchInput.focus()
+                );
+              }}
               style={styles.buttonItem}
             >
               <Icon name="search" type="EvilIcons" />
@@ -276,7 +298,8 @@ const mapStateToProps = ({ movie }) => ({
 
 const mapDispatchToProps = dispatch => ({
   getPopularMovie: param => dispatch(getPopularMovie(param)),
-  loadMoreMovie: param => dispatch(loadMoreMovie(param))
+  loadMoreMovie: param => dispatch(loadMoreMovie(param)),
+  searchMovies: val => dispatch(searchMovies(val))
 });
 
 export default connect(

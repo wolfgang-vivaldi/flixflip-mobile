@@ -1,8 +1,10 @@
 import { combineReducers } from "redux";
 import movie from "./movie";
+import search from "./search";
 
 const app = combineReducers({
-  movie
+  movie,
+  search
 });
 
 export default app;

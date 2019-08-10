@@ -11,6 +11,7 @@ import NewsScreen from "../view/NewsScreen";
 import FavoriteScreen from "../view/FavoriteScreen";
 import WatchedScreen from "../view/WatchedScreen";
 import BottomTabs from "./bottomNavigator";
+import SearchScreen from "../view/SearchScreen";
 
 const DrawerNav = createDrawerNavigator(
   {
@@ -62,7 +63,13 @@ const Stack = createStackNavigator({
   },
   Favorite: FavoriteScreen,
   News: NewsScreen,
-  Watched: WatchedScreen
+  Watched: WatchedScreen,
+  SearchScreen: {
+    screen: SearchScreen,
+    navigationOptions: {
+      header: null
+    }
+  }
 });
 
 export default createAppContainer(Stack);
