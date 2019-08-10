@@ -131,9 +131,8 @@ class HomeScreen extends Component {
   };
 
   _onRefresh() {
-    this.setState(
-      { isRefreshing: SVGComponentTransferFunctionElement, page: 1 },
-      () => this._getPopularMovie()
+    this.setState({ isRefreshing: true, page: 1 }, () =>
+      this._getPopularMovie()
     );
   }
 
