@@ -26,16 +26,8 @@ export const Metrics = {
 };
 
 export const colors = {
-  BLUE: "#597ff5",
-  BLUE_V2: "#61b0fe",
-  DARK_BLUE: "#4f72df",
-  SOFT_BLUE: "#61b0fe",
-  GREY: "#858585",
-  SOFT_GREY: "#e5e5e5",
-  DARK_GREY: "#555555",
-  LIL_GREY: "#f9f9f9",
-  LIL_GREY_V2: "#f6f6f6",
-  SOFT_RED: "#fa7d77"
+  PRIMARY: "#f2af09",
+  BLACK: "#0e0e0e"
 };
 
 const globalStyles = StyleSheet.create({
