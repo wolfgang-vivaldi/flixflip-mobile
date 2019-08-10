@@ -141,14 +141,6 @@ class HomeScreen extends Component {
   _searchMovieAction = () => {
     let param = this.state.searchVal;
     this.props.navigation.navigate("SearchScreen", { param });
-    // this.props
-    //   .searchMovies(param)
-    //   .then(res => {
-    //     console.log("res", res);
-    //   })
-    //   .catch(err => {
-    //     console.log("err", err);
-    //   });
   };
 
   renderFooter = () => {
@@ -183,11 +175,12 @@ class HomeScreen extends Component {
               }}
             >
               <TouchableOpacity
-                onPress={() =>
+                onPress={() => {
+                  this.searchInput.blur();
                   this.setState({
                     searchBar: "bounceOutRight"
-                  })
-                }
+                  });
+                }}
                 style={{ width: "10%" }}
               >
                 <Icon name="ios-arrow-back" type="Ionicons" />
