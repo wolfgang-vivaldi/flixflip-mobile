@@ -1,25 +1,23 @@
 import React, { Component } from "react";
-import { StyleSheet, TouchableOpacity, FlatList, Image } from "react-native";
 import {
-  View,
-  Text,
-  Container,
-  Header,
-  Left,
-  Icon,
-  Content,
-  Title,
-  Body,
-  Card,
-  CardItem,
-  Spinner
-} from "native-base";
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  Image,
+  TextInput,
+  SectionList
+} from "react-native";
+import { Container, Header, Icon, Title, Spinner } from "native-base";
 import { connect } from "react-redux";
 import StarRating from "react-native-star-rating";
+import { createAnimatableComponent, View, Text } from "react-native-animatable";
+
 import globalStyles, { width, height, colors } from "../customLib/globalStyles";
 import { getPopularMovie, loadMoreMovie } from "../redux/actions/movie";
 import { IMAGE_URL } from "../customLib/APIServices";
 import { trimText } from "../customLib/helpers";
+
+const AnimatableSectionList = createAnimatableComponent(SectionList);
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -28,7 +26,9 @@ class HomeScreen extends Component {
       page: 1,
       popular: [],
       count: null,
-      isRefreshing: false
+      isRefreshing: false,
+      showSearch: false,
+      searchBar: null
     };
   }
 
@@ -156,7 +156,45 @@ class HomeScreen extends Component {
     return (
       <Container>
         <Header style={{ backgroundColor: "white" }}>
-          <View style={globalStyles.rowBetween}>
+          {this.state.showSearch ? (
+            <View
+              animation={this.state.searchBar}
+              style={{
+                width: "100%",
+                flexDirection: "row",
+                alignItems: "center",
+                padding: 10,
+                justifyContent: "space-between",
+                backgroundColor: "white"
+              }}
+            >
+              <TouchableOpacity
+                onPress={() =>
+                  this.setState({
+                    searchBar: "bounceOutRight"
+                  })
+                }
+                style={{ width: "10%" }}
+              >
+                <Icon name="ios-arrow-back" type="Ionicons" />
+              </TouchableOpacity>
+              <TextInput
+                style={{ width: "90%", fontSize: 16 }}
+                placeholder="Search Movies"
+              />
+            </View>
+          ) : null}
+
+          <View
+            style={[
+              globalStyles.rowBetween,
+              {
+                position: "absolute",
+                bottom: height * 0.01,
+                zIndex: -1
+              }
+            ]}
+          >
             <View
               style={[
                 globalStyles.rowCenter,
@@ -169,7 +207,15 @@ class HomeScreen extends Component {
               <Title style={{ marginLeft: width * 0.1 }}>Movies</Title>
             </View>
 
-            <TouchableOpacity style={styles.buttonItem}>
+            <TouchableOpacity
+              onPress={() =>
+                this.setState({
+                  showSearch: true,
+                  searchBar: "bounceInRight"
+                })
+              }
+              style={styles.buttonItem}
+            >
               <Icon name="search" type="EvilIcons" />
             </TouchableOpacity>
 
