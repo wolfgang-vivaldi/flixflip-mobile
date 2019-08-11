@@ -5,20 +5,19 @@ import {
   FlatList,
   Image,
   TextInput,
-  SectionList
+  Platform
 } from "react-native";
 import { Container, Header, Icon, Title, Spinner } from "native-base";
 import { connect } from "react-redux";
 import StarRating from "react-native-star-rating";
 import { createAnimatableComponent, View, Text } from "react-native-animatable";
+import Modal from "react-native-modal";
 
 import globalStyles, { width, height, colors } from "../customLib/globalStyles";
 import { getPopularMovie, loadMoreMovie } from "../redux/actions/movie";
 import { IMAGE_URL } from "../customLib/APIServices";
 import { trimText } from "../customLib/helpers";
 import { searchMovies } from "../redux/actions/search";
-
-const AnimatableSectionList = createAnimatableComponent(SectionList);
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -30,7 +29,8 @@ class HomeScreen extends Component {
       isRefreshing: false,
       showSearch: false,
       searchBar: null,
-      searchVal: null
+      searchVal: null,
+      showFilter: false
     };
   }
 
@@ -158,6 +158,32 @@ class HomeScreen extends Component {
     );
   };
 
+  filterModal = msg => {
+    return (
+      <Modal
+        style={{}}
+        isVisible={this.state.showFilter}
+        onBackButtonPress={() => this.setState({ showFilter: false })}
+        onBackdropPress={() => this.setState({ showFilter: false })}
+      >
+        <View
+          style={{
+            backgroundColor: "#f2f2f2",
+            height: Platform.OS === "ios" ? height * 0.3 : height * 0.35,
+            alignItems: "center",
+            paddingTop: 15,
+            paddingHorizontal: 15,
+            paddingBottom: 30
+          }}
+        >
+          <View style={{ width: "100%" }}>
+            <Text>genre:</Text>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
   render() {
     return (
       <Container>
@@ -214,7 +240,14 @@ class HomeScreen extends Component {
                 }
               ]}
             >
-              <Icon name="menu" type="Entypo" />
+              <TouchableOpacity
+                style={{ position: "absolute", zIndex: 1 }}
+                onPress={() => {
+                  this.props.navigation.toggleDrawer();
+                }}
+              >
+                <Icon name="menu" type="Entypo" />
+              </TouchableOpacity>
               <Title style={{ marginLeft: width * 0.1 }}>Movies</Title>
             </View>
 
@@ -232,17 +265,20 @@ class HomeScreen extends Component {
             >
               <Icon name="search" type="EvilIcons" />
             </TouchableOpacity>
-
-            <TouchableOpacity style={styles.buttonItem}>
+            {/* 
+            <TouchableOpacity
+              // onPress={() => this.setState({ showFilter: true })}
+              style={styles.buttonItem}
+            >
               <Icon name="filter" type="FontAwesome" />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <TouchableOpacity style={styles.buttonItem}>
               <Icon name="md-more" type="Ionicons" />
             </TouchableOpacity>
           </View>
         </Header>
-
+        {this.filterModal()}
         {this.props.isLoading ? (
           <Spinner color={colors.BLACK} />
         ) : (
