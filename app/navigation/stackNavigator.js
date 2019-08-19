@@ -14,6 +14,7 @@ import BottomTabs from "./bottomNavigator";
 import SearchScreen from "../view/SearchScreen";
 import { View, Header, Title, Icon } from "native-base";
 import { height, width } from "../customLib/globalStyles";
+import Details from "../view/Details";
 
 const topMenu = [
   {
@@ -163,6 +164,12 @@ const Stack = createStackNavigator({
   Watched: WatchedScreen,
   SearchScreen: {
     screen: SearchScreen,
+    navigationOptions: {
+      header: null
+    }
+  },
+  Details: {
+    screen: Details,
     navigationOptions: {
       header: null
     }

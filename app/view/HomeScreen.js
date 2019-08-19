@@ -79,7 +79,12 @@ class HomeScreen extends Component {
 
   _renderMovie = item => {
     return (
-      <TouchableOpacity style={{ width: width * 0.333, padding: 5 }}>
+      <TouchableOpacity
+        onPress={() => {
+          this.props.navigation.navigate("Details", { id: item.id });
+        }}
+        style={{ width: width * 0.333, padding: 5 }}
+      >
         <View style={{}}>
           <Image
             resizeMethod="resize"
